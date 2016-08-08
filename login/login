@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>I/O WiFi Portal Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <form method="post" action="" class="login">
+    <p>
+      <label for="login">您的用户名:</label>
+      <input type="text" name="username" id="login" value="">
+    </p>
+
+    <p>
+      <label for="password">您的密码:</label>
+      <input type="password" name="password" id="password" value="">
+    </p>
+
+    <p class="login-submit">
+      <button type="submit" class="login-button">Login</button>
+    </p>
+
+    <p class="forgot-password"><a href="reg.html">注册</a></p>
+  </form>
+
+  <section class="about">
+    <p class="about-links">
+      <a href="http://www.ionet,tk:89" target="_parent">I/O.NET</a>
+      <a href="http://www.littlerest.tk" target="_parent">About Me</a>
+    </p>
+    <p class="about-author">
+      &copy; 2015&ndash;2016  -
+      <a href="http://www.cssflow.com/mit-license" target="_blank">MIT License</a><br>
+      I/O.NET Wifi Web portal Login
+  </section>
+</body>
+</html>
