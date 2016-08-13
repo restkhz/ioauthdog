@@ -14,6 +14,8 @@ echo '管理员貌似忘了删了这个了诶？不过也没关系的啦。。';
 //字段 id username password token logintime active qq name activetime
 //    id    用户名  密码    令牌    登陆时间  是否激活  qq  名字  激活的时间
 //
+//可以导入sql_struct.php中的sql语句，快速建立数据库，记得去掉它第一行
+//
 //目录:
 //root 						根
 //|
