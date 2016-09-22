@@ -50,6 +50,7 @@ if (isset($_POST['act']) && isset($_POST['username'])) {
 
 echo '<h1 align=\'center\'><font color="#33FF00">用户管理</font></h1>';
 //
+$db->query("set names 'utf8'");
 $result = $db->query("SELECT * FROM user");
 
 
