@@ -1,81 +1,82 @@
 <?php
-require_once('../antisql.php');
+//It's impossiable to inject again cause I use PDO.
+$config=include('../config.php');
+$dbh = new PDO("mysql:host=" . $config['host'] . ";dbname=" . $config['dbname'] , $config['dbuser'], $config['dbpwd']); //初始化一个PDO对象
+
 session_start();
 
 if(!isset($_SESSION['is_admin']) && $_SESSION['is_admin'] != 1 ){	//无登陆禁止访问
 	header('Location:index.php');
 	exit;
 }
-
-$config=include('../config.php');   
-$db = new mysqli($config['host'],$config['dbuser'], $config['dbpwd'], $config['dbname']);//连接数据库	
-
-if (isset($_POST['act']) && isset($_POST['username'])) {
-	
-	if (inject_check($_POST['username'])) {die('管理员大哥不要注入……');}
-
-	$username=$_POST['username'];
-	if ($_POST['act']=='Active:yes') {
-		$time=(string)date("Y-m-d H:i:s");
-		$sql = "UPDATE user SET active='1' WHERE username='{$username}'";
-		$db->query($sql);
-		$sql = "UPDATE user SET activetime='{$time}' WHERE username='{$username}'";
-		$db->query($sql);
-		echo "<script language=JavaScript> location.replace(location.href);</script>";
-	}		
-
-	if ($_POST['act']=='Active:no') {
-		$sql = "UPDATE user SET active='0' WHERE username='{$username}'";
-		$db->query($sql);
-		echo "<script language=JavaScript> location.replace(location.href);</script>";
+if (isset($_POST['username']) && isset($_POST['act'])){
+	$username = $_POST['username'];
+	$isactive = $_POST['act'];//"$dbms:host=$host;dbname=$dbName";
+	try {
+		
+		if($isactive == "Active:yes"){
+			$time = (string)date("Y-m-d H:i:s");
+			$stmt = $dbh->prepare("UPDATE user SET active=1 , activetime=:time WHERE username=:username");
+			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
+			$stmt->bindParam(':username', $username, PDO::PARAM_STR);
+			$stmt->execute();
+		}else if($isactive == "Active:no"){
+			$stmt = $dbh->prepare("UPDATE user SET active=0 WHERE username=:username");
+			$stmt->bindParam(':username', $username, PDO::PARAM_STR);
+			$stmt->execute();
+		}
+	} catch (PDOException $e) {
+		die ("Error!: " . $e->getMessage() . "<br/>");
 	}
-
-} 
-
-?>
-
-
-
-<html>
-<head>
-<meta http-equiv="content-type"content="text/html charset=utf-8">
-
-</head>
-<title>用户管理</title>
-<body bgcolor="black">
-
-
-
-<?php
-
-echo '<h1 align=\'center\'><font color="#33FF00">用户管理</font></h1>';
-//
-$db->query("set names 'utf8'");
-$result = $db->query("SELECT * FROM user");
-
-
-echo '<table border=\'1px\' bordercolor=\'green\' align=\'center\' >';
-echo '<tr  style="color:red;"><th>&nbsp;&nbsp;Username&nbsp;&nbsp;</th><th>&nbsp;&nbsp;p4ssw0rd&nbsp;&nbsp;</th><th>&nbsp;Active&nbsp;</th><th>&nbsp;&nbsp;&nbsp;QQ&nbsp;&nbsp;&nbsp;</th><th>&nbsp;&nbsp;Name&nbsp;&nbsp;</th><th>&nbsp;&nbsp;ActiveTime&nbsp;&nbsp;</th></tr>';
-
-
-while($row=$result->fetch_object()){
-
-echo"<tr style=\"color:#33FF00;\"><td>$row->username</td><td>$row->password</td><td>$row->active</td><td>$row->qq</td><td>$row->name</td><td>$row->activetime</td></tr>";
-
 }
 
-
-echo "</table>";
-
 ?>
 
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="content-type"content="text/html charset=utf-8">
+	<link href="http://cdn.bootcss.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+	<script src="http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<style>
+		th, td {
+			width: 100px;
+			text-align: center;
+		}
+	</style>
+</head>
+<title>后台 - ioauthdog</title>
+<body style="position: relative;">
 
+<div class="panel panel-default" style="position: absolute;left: 20px;right: 20px;top: 20px;">
+    <div class="panel-body">
+	欢迎进入后台！
+<?php
 
-<br/><br/>
-<form id="form1" name="form1" method="post" action="" align='center'>
-    <input type="text" name="username" />
-    <input type="submit" name="act" value="Active:yes" />
-    <input type="submit" name="act" value="Active:no" />
+echo '<h1 align=\'center\'><font>用户管理</font></h1>';
+
+$dbh->query("set names 'utf8'");
+
+echo '<table class="table table-bordered">';
+echo '<tr><th>Username</th><th>p4ssw0rd</th><th>Active</th><th>QQ</th><th>Name</th><th>ActiveTime</th><th>Opreate</th></tr>';
+$sql="SELECT * FROM user";
+foreach ($dbh->query($sql) as $row) {
+	echo"<tr><td>". $row['username'] . "</td><td>" . $row['password'] . "</td><td>" . $row['active'] . "</td><td>" . $row['qq'] . "</td><td>" . $row['name'] . "</td><td>" . $row['activetime'] . "</td><td>";
+?>
+<form method="post" action="admin.php">
+	<input type="hidden" name="username" value="<?php echo $row['username'] ?>" />
+	<input type="hidden" name="act" value="<?php echo ($row['active'] == 0) ? "Active:yes" : "Active:no"; ?>" />
+	<input type="submit" class="btn btn-primary" value="<?php echo ($row['active'] == 0) ? "Active" : "Deactive"; ?>" />
 </form>
+<?php
+	echo "</td></tr>";
+}
+echo "</table>";
 
+$dbh = null;
+
+?>
+    </div>
+</div>
 </body>
