@@ -36,6 +36,7 @@ if (isset($_POST['username']) && isset($_POST['act'])){
 <html>
 <head>
 	<meta http-equiv="content-type"content="text/html charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="http://cdn.bootcss.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 	<script src="http://cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
 	<script src="http://cdn.bootcss.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -48,6 +49,27 @@ if (isset($_POST['username']) && isset($_POST['act'])){
 </head>
 <title>后台 - ioauthdog</title>
 <body style="position: relative;">
+	
+<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">Administration</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="#">User</a></li>
+	      <li><a href="#">Nodes</a></li>
+              <li><a href="#">About</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+</div>
+	
 
 <div class="panel panel-default" style="position: absolute;left: 20px;right: 20px;top: 20px;">
     <div class="panel-body">
