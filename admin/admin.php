@@ -2,7 +2,7 @@
 //It's impossiable to inject again cause I use PDO.
 $config=include('../config.php');
 $dbh = new PDO("mysql:host=" . $config['host'] . ";dbname=" . $config['dbname'] , $config['dbuser'], $config['dbpwd']); //初始化一个PDO对象
-
+$dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 session_start();
 
 if(!isset($_SESSION['is_admin']) && $_SESSION['is_admin'] != 1 ){	//无登陆禁止访问
