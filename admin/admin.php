@@ -4,7 +4,6 @@ $config=include('../config.php');
 $dbh = new PDO("mysql:host=" . $config['host'] . ";dbname=" . $config['dbname'] , $config['dbuser'], $config['dbpwd']); //初始化一个PDO对象
 $dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 session_start();
-
 if(!isset($_SESSION['is_admin']) && $_SESSION['is_admin'] != 1 ){	//无登陆禁止访问
 	header('Location:index.php');
 	exit;
@@ -29,7 +28,6 @@ if (isset($_POST['username']) && isset($_POST['act'])){
 		die ("Error!: " . $e->getMessage() . "<br/>");
 	}
 }
-
 ?>
 
 <!doctype html>
@@ -46,6 +44,8 @@ if (isset($_POST['username']) && isset($_POST['act'])){
 			text-align: center;
 		}
 	</style>
+
+
 </head>
 <title>后台 - ioauthdog</title>
 <body style="position: relative;">
@@ -53,11 +53,8 @@ if (isset($_POST['username']) && isset($_POST['act'])){
     <div class="panel-body">
 	欢迎进入后台！
 <?php
-
 echo '<h1 align=\'center\'><font>用户管理</font></h1>';
-
 $dbh->query("set names 'utf8'");
-
 echo '<table class="table table-bordered">';
 echo '<tr><th>Username</th><th>p4ssw0rd</th><th>Active</th><th>QQ</th><th>Name</th><th>ActiveTime</th><th>Opreate</th></tr>';
 $sql="SELECT * FROM user";
@@ -73,9 +70,7 @@ foreach ($dbh->query($sql) as $row) {
 	echo "</td></tr>";
 }
 echo "</table>";
-
 $dbh = null;
-
 ?>
     </div>
 </div>
